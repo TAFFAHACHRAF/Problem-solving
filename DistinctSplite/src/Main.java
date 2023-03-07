@@ -15,7 +15,7 @@ public class Main {
                 System.out.println(DistinctSplit(str));
             }
         }
-    }
+    } //new 
 
     public static int DistinctSplit(String str){
         int length=str.length();
