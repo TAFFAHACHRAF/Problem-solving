@@ -7,12 +7,14 @@ def is_leap(year):
     if(__NotLeapYear.__contains__(year)==True):
         return False
 
-    is_devided_by_4=year%4==0
-    is_not_devided_by_100=not(year%100==0)
-    is_devided_by_400=year%400==0
-
-    return True if is_devided_by_4 and is_not_devided_by_100 and is_devided_by_400 else False
-    # This function return True if the year is a leap year
+    if year % 4 != 0:
+        return False
+    elif year % 100 != 0:
+        return True
+    elif year % 400 != 0:
+        return False
+    else:
+        return True
 
 year = int(input())
 print(is_leap(year))
