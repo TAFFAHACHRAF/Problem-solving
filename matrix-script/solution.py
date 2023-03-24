@@ -6,6 +6,9 @@ import random
 import re
 import sys
 
+def _replace_symbols(str1,str2):
+    return(str1.isalnum() and str2.isalnum())
+
 first_multiple_input = input().rstrip().split()
 
 n = int(first_multiple_input[0])
@@ -18,12 +21,17 @@ for _ in range(n):
     matrix_item = input()
     matrix.append(matrix_item)
 
-result = ""
 
+# decode the script
+decoded = ""
 for j in range(0,3):
     for i in range(0,len(matrix)):
-        result = result + matrix[i][j]
-    
-    result=result+" "
+        if matrix[i][j].isalnum():
+            decoded += matrix[i][j]
+        elif decoded and decoded[-1] != " ":
+            decoded += " "
 
-print(result)
+print(decoded)
+
+
+
