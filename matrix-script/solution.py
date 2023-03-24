@@ -24,8 +24,8 @@ for _ in range(n):
 
 # decode the script
 decoded = ""
-for j in range(0,3):
-    for i in range(0,len(matrix)):
+for j in range(matrz):
+    for i in range(rows):
         if matrix[i][j].isalnum():
             decoded += matrix[i][j]
         elif decoded and decoded[-1] != " ":
