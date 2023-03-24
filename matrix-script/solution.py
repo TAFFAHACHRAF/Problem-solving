@@ -23,5 +23,7 @@ result = ""
 for j in range(0,3):
     for i in range(0,len(matrix)):
         result = result + matrix[i][j]
+    
+    result=result+" "
 
 print(result)
