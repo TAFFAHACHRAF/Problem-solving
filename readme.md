@@ -1,5 +1,6 @@
 Problem Solving 
 
+```
 C:.
 ├───big-number
 ├───capitalize
@@ -32,3 +33,4 @@ C:.
 ├───Texte Alignement
 ├───whats-your-name
 └───words-score
+```
