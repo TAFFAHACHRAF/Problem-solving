@@ -52,13 +52,15 @@ void addEdge(struct Graph* graph, int s, int d) {
 void printGraph(struct Graph* graph) {
   int v;
   for (v = 0; v < graph->numVertices; v++) {
-    struct node* temp = graph->adjLists[v];
-    printf("[%d]=> ", v);
-    while (temp) {
-      printf("%d -> ", temp->vertex);
-      temp = temp->next;
+    if (graph->adjLists[v] != NULL) {
+      struct node* temp = graph->adjLists[v];
+      printf("[%d]=> ", v);
+      while (temp) {
+        printf("%d -> ", temp->vertex);
+        temp = temp->next;
+      }
+      printf("#\n");
     }
-    printf("#\n");
   }
 }
 
@@ -181,24 +183,59 @@ void printShortestPath(struct Graph* graph, int source, int destination) {
   free(distance);
 }
 
+int getMaxValue(struct Graph *graph){
+  int v=0;
+  int max=-88888;
+  for(int i=0;i<graph->numVertices;i++){
+    struct node* temp;
+    temp=graph->adjLists[i];
+    while(temp != NULL){
+      if(temp->vertex >  max){
+        max=temp->vertex;
+      }
+      temp=temp->next;
+    }
+  }
+  return max;
+}
+
+int getMinValue(struct Graph *graph){
+  int v=0;
+  int min=graph->numVertices;
+  for(int i=0;i<graph->numVertices;i++){
+    struct node* temp;
+    temp=graph->adjLists[i];
+    while(temp != NULL){
+      if(temp->vertex <  min){
+        min=temp->vertex;
+      }
+      temp=temp->next;
+    }
+  }
+  return min;
+}
+
 int main() {
-  struct Graph* graph = createAGraph(6);
-  addEdge(graph, 0, 1);
-  addEdge(graph, 0, 2);
-  // addEdge(graph, 3, 1);
-  addEdge(graph, 1, 4);
-  addEdge(graph, 2, 4);
-  addEdge(graph, 3, 4);
-  addEdge(graph, 3, 5);
-  addEdge(graph, 4, 3);
-  addEdge(graph, 1, 5);
+  struct Graph* graph = createAGraph(8000);
+  addEdge(graph, 9, 8);
+  addEdge(graph, 8, 999);
+  addEdge(graph, 8, 999);
+  addEdge(graph, 999, 87);
+  addEdge(graph, 578, 87);
+  addEdge(graph, 999, 1700);
+  addEdge(graph, 57, 87);
+  addEdge(graph, 87, 3);
+  addEdge(graph, 8, 74);
 
   printGraph(graph);
 
-  dataExist(graph, 8);
+  dataExist(graph, 875);
 
   printf("\nShortest Path:\n");
   printShortestPath(graph, 0, 5);
+
+  printf("the max value is : %d\n",getMaxValue(graph));
+  printf("the min value is : %d",getMinValue(graph));
 
   return 0;
 }
