@@ -1,5 +1,3 @@
-// Adjascency List representation in C
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,6 +5,7 @@ struct node {
   int vertex;
   struct node* next;
 };
+
 struct node* createNode(int);
 
 struct Graph {
@@ -63,14 +62,143 @@ void printGraph(struct Graph* graph) {
   }
 }
 
+// Check if data exists in the graph
+void dataExist(struct Graph* graph, int data) {
+  int v;
+  for (int i = 0; i < graph->numVertices; i++) {
+    struct node* temp = graph->adjLists[i];
+    while (temp != NULL) {
+      if (temp->vertex == data) {
+        printf("%d exists in this graph\n", data);
+        return;
+      }
+      temp = temp->next;
+    }
+  }
+  printf("%d does not exist in the graph\n", data);
+}
+
+// Structure to store the path
+struct QueueNode {
+  int vertex;
+  struct QueueNode* next;
+};
+
+// Enqueue a vertex to the queue
+void enqueue(struct QueueNode** queue, int vertex) {
+  struct QueueNode* newNode = malloc(sizeof(struct QueueNode));
+  newNode->vertex = vertex;
+  newNode->next = NULL;
+
+  if (*queue == NULL) {
+    *queue = newNode;
+  } else {
+    struct QueueNode* curr = *queue;
+    while (curr->next != NULL) {
+      curr = curr->next;
+    }
+    curr->next = newNode;
+  }
+}
+
+// Dequeue a vertex from the queue
+int dequeue(struct QueueNode** queue) {
+  if (*queue == NULL) {
+    return -1;
+  }
+
+  struct QueueNode* temp = *queue;
+  int vertex = temp->vertex;
+  *queue = (*queue)->next;
+  free(temp);
+
+  return vertex;
+}
+
+// Check if the queue is empty
+int isQueueEmpty(struct QueueNode* queue) {
+  return queue == NULL;
+}
+
+// Print the shortest path from source to destination
+void printShortestPath(struct Graph* graph, int source, int destination) {
+  int* visited = calloc(graph->numVertices, sizeof(int));
+  int* parent = malloc(graph->numVertices * sizeof(int));
+  int* distance = malloc(graph->numVertices * sizeof(int));
+
+  struct QueueNode* queue = NULL;
+
+  // Initialize parent and distance arrays
+  int i;
+  for (i = 0; i < graph->numVertices; i++) {
+    parent[i] = -1;
+    distance[i] = -1;
+  }
+
+  // Mark the source vertex as visited and enqueue it
+  visited[source] = 1;
+  distance[source] = 0;
+  enqueue(&queue, source);
+
+  // Perform BFS
+  while (!isQueueEmpty(queue)) {
+    int currentVertex = dequeue(&queue);
+
+    struct node* temp = graph->adjLists[currentVertex];
+    while (temp) {
+      int adjacentVertex = temp->vertex;
+
+      if (!visited[adjacentVertex]) {
+        visited[adjacentVertex] = 1;
+        parent[adjacentVertex] = currentVertex;
+        distance[adjacentVertex] = distance[currentVertex] + 1;
+        enqueue(&queue, adjacentVertex);
+      }
+
+      temp = temp->next;
+    }
+  }
+
+  // Check if a path exists from source to destination
+  if (distance[destination] == -1) {
+    printf("No path exists between %d and %d\n", source, destination);
+  } else {
+    printf("Shortest path from %d to %d: ", source, destination);
+    int currentVertex = destination;
+    printf("%d", currentVertex);
+
+    while (parent[currentVertex] != -1) {
+      printf(" <- %d", parent[currentVertex]);
+      currentVertex = parent[currentVertex];
+    }
+
+    printf("\n");
+    printf("Shortest distance: %d\n", distance[destination]);
+  }
+
+  free(visited);
+  free(parent);
+  free(distance);
+}
+
 int main() {
-  struct Graph* graph = createAGraph(4);
+  struct Graph* graph = createAGraph(6);
   addEdge(graph, 0, 1);
   addEdge(graph, 0, 2);
-  addEdge(graph, 0, 3);
-  addEdge(graph, 1, 2);
+  // addEdge(graph, 3, 1);
+  addEdge(graph, 1, 4);
+  addEdge(graph, 2, 4);
+  addEdge(graph, 3, 4);
+  addEdge(graph, 3, 5);
+  addEdge(graph, 4, 3);
+  addEdge(graph, 1, 5);
 
   printGraph(graph);
+
+  dataExist(graph, 8);
+
+  printf("\nShortest Path:\n");
+  printShortestPath(graph, 0, 5);
 
   return 0;
 }
