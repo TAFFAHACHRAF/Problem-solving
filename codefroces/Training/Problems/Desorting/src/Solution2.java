@@ -1,6 +1,7 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class Solution {
+public class Solution2 {
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
         int nbTests=sc.nextInt();
@@ -12,7 +13,7 @@ public class Solution {
             for(int j=0;j<size;j++){
                 t[j]=sc.nextInt();
             }
-            System.out.println(minimumOperationsToUnsort_V2(size,t));
+            System.out.println(minimumOperationsToUnsort_V1(size,t,1));
         }
     }
 
@@ -28,6 +29,28 @@ public class Solution {
             min_diff=Math.min(k,min_diff);
         }
         return min_diff;
+    }
+
+    public static int minimumOperationsToUnsort_V1(int size, long[] array, int pickI) {
+        int min=minimumOperationsToUnsortHelper(size,array,1,0);
+        for(int i=1;i<size;i++)
+            min=Math.min(min,minimumOperationsToUnsortHelper(size,array,i,0));
+        return min;
+    }
+
+    public static int minimumOperationsToUnsortHelper(int size, long[] array, int pickI, int operations) {
+        if (isSortedArray(array,0,size-1)) {
+            long[] modifiedArray = Arrays.copyOf(array, size); // Create a copy of the original array
+            for (int i = 0; i < pickI; i++) {
+                modifiedArray[i]++;
+            }
+            for (int i = pickI; i < size; i++) {
+                modifiedArray[i]--;
+            }
+            return minimumOperationsToUnsortHelper(size, modifiedArray, pickI, ++operations);
+        } else {
+            return operations;
+        }
     }
 
     public static boolean isSortedArray(long array[], int start, int end) {
@@ -48,4 +71,6 @@ public class Solution {
         // The entire range is sorted if both halves are sorted and the merge is sorted.
         return leftSorted && rightSorted && mergedSorted;
     }
+
+
 }
