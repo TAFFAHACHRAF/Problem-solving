@@ -6,6 +6,17 @@ struct node {
   struct node* next;
 };
 
+void printLinkedList(struct node* list){
+  if(list != NULL){
+    struct node* temp;
+    temp=list;
+    while(temp){
+      printf("%d->",temp->vertex);
+      temp=temp->next;
+    }
+  }
+}
+
 struct node* createNode(int);
 
 struct Graph {
@@ -53,12 +64,8 @@ void printGraph(struct Graph* graph) {
   int v;
   for (v = 0; v < graph->numVertices; v++) {
     if (graph->adjLists[v] != NULL) {
-      struct node* temp = graph->adjLists[v];
       printf("[%d]=> ", v);
-      while (temp) {
-        printf("%d -> ", temp->vertex);
-        temp = temp->next;
-      }
+      printLinkedList(graph->adjLists[v]);
       printf("#\n");
     }
   }
