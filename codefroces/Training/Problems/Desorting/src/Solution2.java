@@ -17,16 +17,15 @@ public class Solution2 {
         }
     }
 
-    public static long minimumOperationsToUnsort_V2(int size,long[] array){
-        if(!isSortedArray(array,0,size-1))
-            return 0;
-
-        long min_diff=99999; // +linfini
-        for(int i=1;i<size;i++){
-            long lastItem=array[i-1];
-            long currentItem=array[i];
-            long k=(currentItem-lastItem)/2+1;
-            min_diff=Math.min(k,min_diff);
+    public static long minimumOperationsToUnsort_V2(int size, long[] array) {
+        long min_diff = 99999; // +linfini
+        for (int i = 0; i < size - 1; i++) {
+            long lastItem = array[i];
+            long currentItem = array[i + 1];
+            if (currentItem < lastItem)
+                return 0;
+            long k = (currentItem - lastItem) / 2 + 1;
+            min_diff = Math.min(k, min_diff);
         }
         return min_diff;
     }
