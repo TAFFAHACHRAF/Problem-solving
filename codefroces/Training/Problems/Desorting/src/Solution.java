@@ -7,7 +7,7 @@ public class Solution {
         sc.nextLine();
         for (int i = 0; i < nbTests; i++) {
             int size = sc.nextInt();
-            int[] t = new int[size];
+            long[] t = new long[size];
 
             for (int j = 0; j < size; j++) {
                 t[j] = sc.nextInt();
@@ -16,15 +16,14 @@ public class Solution {
         }
     }
 
-    public static int minimumOperationsToUnsort_V3(int size, int[] array) {
-        int lastMOTU;
-        int currentMOTU;
-        int diff=array[1] - array[0];
-        if(diff %2 == 0){
-            currentMOTU = lastMOTU = diff / 2;
-        }else {
-            currentMOTU = lastMOTU = diff / 2  + 1;
-        }
+    public static long minimumOperationsToUnsort_V3(int size, long[] array) {
+        if(size == 2)
+            return Math.abs(array[1] - array[0]) / 2 + 1;
+
+        long lastMOTU;
+        long currentMOTU;
+        long diff=Math.abs(array[1] - array[0]);
+        currentMOTU = lastMOTU = diff / 2 + 1;
 
         for (int i = 1; i < size - 1; i++) {
             if(!(array[i] < array[i+1]))
@@ -32,11 +31,7 @@ public class Solution {
 
             diff = array[i+1] - array[i];
 
-            if(diff %2 == 0){
-                currentMOTU = diff / 2;
-            } else {
-                currentMOTU = diff / 2 + 1;
-            }
+            currentMOTU = diff / 2 + 1;
 
             currentMOTU = Math.min(lastMOTU,currentMOTU);
         }

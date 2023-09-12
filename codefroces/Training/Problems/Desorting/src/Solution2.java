@@ -71,5 +71,4 @@ public class Solution2 {
         return leftSorted && rightSorted && mergedSorted;
     }
 
-
 }
